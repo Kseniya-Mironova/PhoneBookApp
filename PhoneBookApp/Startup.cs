@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PhoneBookApp.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PhoneBookApp.Interfaces;
+using PhoneBookApp.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PhoneBookApp
 {
@@ -28,7 +30,9 @@ namespace PhoneBookApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddDbContext<Data.AppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IPhoneBookService, PhoneBookService>();
+            services.AddScoped<IDapperService, DapperService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
