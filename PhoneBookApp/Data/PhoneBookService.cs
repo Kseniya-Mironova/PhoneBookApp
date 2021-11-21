@@ -35,7 +35,7 @@ namespace PhoneBookApp.Data
         {
             var phoneBook = Task.FromResult
                (_dapperService.Get<PhoneBook>
-               ($"select * from [dbo].[PhoneBook] where Id = {id}", null,
+               ($"SELECT PB.Id, P.LastName, P.FirstName, P.SecondName, R.RoleName, D.DeptName, PB.Phone FROM [dbo].[Person] AS P JOIN [dbo].[Role] AS R ON P.RoleId = R.Id JOIN [dbo].[Department] AS D ON P.DeptId = D.Id JOIN [dbo].[PhoneBook] AS PB ON P.Id = PB.PersonId WHERE PB.Id = {id}", null,
                commandType: CommandType.Text));
             return phoneBook;
         }
@@ -50,7 +50,7 @@ namespace PhoneBookApp.Data
         public Task<int> Count(string search)
         {
             var totPhoneBook = Task.FromResult(_dapperService.Get<int>
-               ($"select COUNT(*) from FROM [dbo].[Person] AS P JOIN[dbo].[Role] AS R ON P.RoleId = R.Id JOIN[dbo].[Department] AS D ON P.DeptId = D.Id JOIN[dbo].[PhoneBook] AS PB ON P.Id = PB.PersonId WHERE P.LastName like '%{search}%'", null,
+               ($"select COUNT(*) FROM [dbo].[Person] AS P JOIN[dbo].[Role] AS R ON P.RoleId = R.Id JOIN [dbo].[Department] AS D ON P.DeptId = D.Id JOIN [dbo].[PhoneBook] AS PB ON P.Id = PB.PersonId WHERE P.LastName like '%{search}%'", null,
                commandType: CommandType.Text));
             return totPhoneBook;
         }
@@ -59,7 +59,7 @@ namespace PhoneBookApp.Data
         {
             var phoneBook = Task.FromResult
                (_dapperService.GetAll<PhoneBook>
-               ($"SELECT P.LastName, P.FirstName, P.SecondName, R.RoleName, D.DeptName, PB.Phone FROM[dbo].[Person] AS P JOIN[dbo].[Role] AS R ON P.RoleId = R.Id JOIN[dbo].[Department] AS D ON P.DeptId = D.Id JOIN[dbo].[PhoneBook] AS PB ON P.Id = PB.PersonId WHERE P.LastName like '%{search}%' ORDER BY {orderBy} {direction} OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY; ", null, commandType: CommandType.Text));
+               ($"SELECT PB.Id, P.LastName, P.FirstName, P.SecondName, R.RoleName, D.DeptName, PB.Phone FROM [dbo].[Person] AS P JOIN[dbo].[Role] AS R ON P.RoleId = R.Id JOIN [dbo].[Department] AS D ON P.DeptId = D.Id JOIN [dbo].[PhoneBook] AS PB ON P.Id = PB.PersonId WHERE P.LastName like '%{search}%' ORDER BY {orderBy} {direction} OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY; ", null, commandType: CommandType.Text));
            return phoneBook;
         }
         public Task<int> Update(PhoneBook phoneBook)

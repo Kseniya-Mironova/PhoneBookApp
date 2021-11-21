@@ -23,8 +23,8 @@ GO
 -- Сотрудник
 CREATE TABLE [dbo].[Person](
        [Id]          [int] IDENTITY(1,1) NOT NULL,
-       [FirstName]   [varchar](50) NOT NULL,
-       [LastName]    [varchar](50) NOT NULL,
+	   [LastName]    [varchar](50) NOT NULL,
+       [FirstName]   [varchar](50) NOT NULL,     
 	   [SecondName]  [varchar](50),
        [RoleId]     [int] NOT NULL,
 	   [DeptId]     [int] NOT NULL

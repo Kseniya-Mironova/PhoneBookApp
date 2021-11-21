@@ -9,7 +9,7 @@ using System.Data.Common;
 using System.Linq;
 
 
-namespace BookApp.Data
+namespace PhoneBookApp.Data
 {
     public class DapperService : IDapperService
     {
