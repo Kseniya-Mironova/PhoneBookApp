@@ -77,5 +77,23 @@ namespace PhoneBookApp.Data
                dbPara, commandType: CommandType.StoredProcedure));
             return updatePhoneBook;
         }
+
+        public Task<List<Role>> FetchAllRoles()
+        {
+            var roles = Task.FromResult
+                (_dapperService.GetAll<Role>
+                ($"SELECT * FROM [dbo].[Role] ORDER BY RoleName; ",
+                null, commandType: CommandType.Text));
+            return roles;
+        }
+
+        public Task<List<Department>> FetchAllDepts()
+        {
+            var dept = Task.FromResult
+                (_dapperService.GetAll<Department>
+                ($"SELECT * FROM [dbo].[Department] ORDER BY DeptName; ",
+                null, commandType: CommandType.Text));
+            return dept;
+        }
     }
 }

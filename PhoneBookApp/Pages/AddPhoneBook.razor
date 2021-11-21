@@ -6,7 +6,7 @@
 @inject IPhoneBookService phoneBookService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 <h2>
-    Добавление сотруднка
+    Добавление сотрудника
 </h2>
 <div class="row">
     <div class="col-md-4">
@@ -21,12 +21,36 @@
                 <label for="SecondName" class="control-label">Отчество</label>
                 <input for="SecondName" class="form-control"
                        @bind-value="@phoneBook.SecondName" />
-                <label for="RoleName" class="control-label">Должность</label>
-                <input for="RoleName" class="form-control"
-                       @bind-value="@phoneBook.RoleName" />
-                <label for="DeptName" class="control-label">Подразделение</label>
-                <input for="DeptName" class="form-control"
-                       @bind-value="@phoneBook.DeptName" />
+                <div class="form-group">
+                    <label for="RoleName" class="control-label">Должность</label>
+                    <select for="RoleName" class="form-control"
+                            @bind="@phoneBook.RoleName">
+                        <option value=0 disabled selected hidden>
+                            @roles[0].RoleName
+                        </option>
+                        @foreach (var role in roles)
+                        {
+                            <option value="@role.RoleName">
+                                @role.RoleName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="DeptName" class="control-label">Подразделение</label>
+                    <select for="DeptName" class="form-control"
+                            @bind="@phoneBook.DeptName">
+                        <option value=0 disabled selected hidden>
+                            @departments[0].DeptName
+                        </option>
+                        @foreach (var dept in departments)
+                        {
+                            <option value="@dept.DeptName">
+                                @dept.DeptName
+                            </option>
+                        }
+                    </select>
+                </div>               
                 <label for="Phone" class="control-label">Телефон</label>
                 <input for="Phone" class="form-control"
                        @bind-value="@phoneBook.Phone" />
@@ -45,7 +69,19 @@
     </div>
 </div>
 @code {
+
     PhoneBook phoneBook = new PhoneBook();
+    List<Role> roles = new List<Role>();
+    List<Department> departments = new List<Department>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        roles = await phoneBookService.FetchAllRoles();
+        departments = await phoneBookService.FetchAllDepts();
+    }
+
     protected async Task CreatePhoneBookAsync()
     {
         await phoneBookService.Create(phoneBook);
@@ -56,4 +92,9 @@
         navigationManager.NavigateTo("/phoneBookList");
     }
 }
+
+    
+      
+       
+     
 
